@@ -1,0 +1,48 @@
+---
+title: "dataframes"
+format: html
+editor: visual
+---
+
+> 
+>
+> “It is a capital mistake to theorize before one has data.”
+>
+> :   Sherlock Holmes in “A study in Scarlet” by Arthur Conan Doyle
+
+Data frames are 2 dimensional collections of data - that share a look and feel with spreadsheets, but they have many more uses with fewer drawbacks. Spreadsheets have their uses, but data frames give the user more power to manipulate and analyze data.
+
+## A review of R's basic data structures
+
+R has a variety of data types loosely called `atomic`; we are most familiar with `numeric`, `logical` and `character`. There are some others we might consider as `atomic` such as `Date` and `POSIXt` even though in reality each are special types of `numeric`.
+
+These can be organized into containers such as vectors, matrices, arrays, lists and, our friend today, data.frames. The diagram below shows the approximate relationship among the different types of containers.
+
+![data-type](images/R-data-types.png)
+
+[The base R data frame](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Data-frames) is called `data.frame, but really it is a [special list](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Lists), which, in turn, is a [special vector](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Simple-manipulations-numbers-and-vectors)`.
+
+### The players or "a data frame is a list is a vector"
+
+A **vector** is a collection of atomic data types (numeric, integer, character, logical, Date, POSIXt, etc.) Elements *may* be named.
+
+A **list** is a vector that removes the atomic data type membership requirement. Instead, each element can by any data type. Elements *may* be named..
+
+A **data frame** is a special type of list where elements **must be named**, and the each element *must have the same length* as that of its sibling elements.
+
+
+## Data
+
+We'll use the `flights` from the `.
+
+```{r}
+intalled = installed.packages()
+if (!'nycflights13' %in% rownames(installed)) install.packages("nycflights13")
+library(nycflights13)
+flights
+```
+
+OK, so it's actually not just a data.frame, but is actually a tibble.
+## Base R
+
+

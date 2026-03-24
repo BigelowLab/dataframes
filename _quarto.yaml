@@ -1,0 +1,47 @@
+project:
+  type: website
+  output-dir: docs
+  execute-dir: project
+  render:
+    - index.qmd
+    - base_r.qmd
+    - tibble.qmd
+    - data.table.qmd
+    - tidytable.qmd
+execute: 
+  cache: false
+website:
+  title: "dataframes"
+  page-navigation: true
+  back-to-top-navigation: true
+  page-footer: "Copyright 2026, Bigelow Laboratory for Ocean Science" 
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - text: Home
+        href: index.qmd
+      - text: Base R
+        href: base_R.qmd
+      - text: tibble
+        href: tibble.qmd
+      - text: data.table
+        href: data.table.qmd
+      - text: tidytable
+        href: tidytable.qmd
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            url:  https://github.com/BigelowLab/dataframes
+          - text: Report a bug or ask a question
+            url:  https://github.com/BigelowLab/ColbyForecasting/dataframes
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    number-sections: true
+
+editor: source
+
