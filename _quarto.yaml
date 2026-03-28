@@ -4,10 +4,9 @@ project:
   execute-dir: project
   render:
     - index.qmd
-    - base_r.qmd
-    - tibble.qmd
-    - data.table.qmd
-    - tidytable.qmd
+    - columns.qmd
+    - rows.qmd
+    - groups.qmd
 execute: 
   cache: false
 website:
@@ -21,21 +20,23 @@ website:
     contents:
       - text: Home
         href: index.qmd
-      - text: Base R
-        href: base_R.qmd
-      - text: tibble
-        href: tibble.qmd
-      - text: data.table
-        href: data.table.qmd
-      - text: tidytable
-        href: tidytable.qmd
+      - text: Subsetting columns (variables)
+        href: columns.qmd
+      - text: Subsetting rows (records)
+        href: rows.qmd
+      - text: Working with groups
+        href: groups.qmd
+      - text: Spatial
+        href: spatial.qmd
     tools:
       - icon: github
         menu:
           - text: Source Code
-            url:  https://github.com/BigelowLab/dataframes
+            url: https://github.com/BigelowLab/dataframes
           - text: Report a bug or ask a question
-            url:  https://github.com/BigelowLab/ColbyForecasting/dataframes
+            url: https://github.com/BigelowLab/ColbyForecasting/dataframes
+          - text: Tandy Center for Ocean Forecasting
+            url: https://www.bigelow.org/science/centers/ocean-forecasting/
 format:
   html:
     theme: cosmo
