@@ -4,3 +4,53 @@ format: html
 editor: source
 ---
 
+We should think about how these data frames play with the [sf R package](https://r-spatial.github.io/sf/). We provide a selection of buoy metadata from the [buoydata R package](https://github.com/NOAA-EDAB/buoydata) where each buoy has a spatial location.
+
+**tldr** `sf` plays well with each of the data frames.
+
+```{r}
+buoys = readr::read_csv("data/buoys.csv")
+```
+
+Or you can read from the github repos...
+
+```{r}
+buoys = read.csv("https://raw.githubusercontent.com/BigelowLab/dataframes/refs/heads/main/data/buoys.csv",
+                 stringsAsFactors = FALSE)
+```
+
+As a first pass, can we coerce this data frame into each of the spatial objects.  
+
+## data.frame
+
+```{r}
+df = sf::st_as_sf(buoys, coords = c("LON", "LAT"), crs = 4326) 
+df
+```
+
+
+## tibble
+
+```{r}
+tbl = dplyr::as_tibble(buoys)
+tbl = sf::st_as_sf(tbl, coords = c("LON", "LAT"), crs = 4326) 
+tbl
+```
+
+## tidytable
+
+```{r}
+tt = tidytable::as_tidytable(buoys)
+tt = sf::st_as_sf(tt, coords = c("LON", "LAT"), crs = 4326) 
+tt
+```
+
+## data.table
+
+```{r}
+dt = data.table::as.data.table(buoys)
+dt = sf::st_as_sf(dt, coords = c("LON", "LAT"), crs = 4326) 
+dt
+```
+
+

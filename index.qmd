@@ -39,19 +39,16 @@ A **matrix** is a 2-d grid of uniform lcass objects organized by rows and column
 We'll use the `flights` data frame from [Hadley Wickham](https://cran.r-project.org/web/packages/nycflights13/index.html).  Below, we check that you have the packages we'll use, and, if not, we install them for you.  We also provide a small function to retrieve the `flights` data as one of `data.frame`, `tibble`, `data.table` or `tidytable`.
 
 ```{r}
-packages = c("dplyr", "data.table","tidytable", "nycflights13")
+packages = c("dplyr", "data.table","tidytable", "nycflights13", "sf")
 installed = installed.packages()
 for (package in packages){
   if (!package %in% rownames(installed)){
     install.packages(package)
   }
+  suppressPackageStartupMessages({
+    library(package, character.only = TRUE)
+  })
 }
-suppressPackageStartupMessages({
-  library(nycflights13)
-  library(dplyr)
-  library(data.table)
-  library(tidytable)
-})
 
 #' Read in the `flights` data as a user-specified type
 #' of data frame

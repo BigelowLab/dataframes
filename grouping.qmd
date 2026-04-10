@@ -1,0 +1,106 @@
+---
+title: "Grouping"
+format: html
+editor: source
+---
+
+A very common task is to split a data frame into subgroups, operate somehow on each group, and then bind the results back into one data frame: `split-do-bind`.
+
+Let's do something simple with the flight data: split into groupings by `origin` and `carrier` and compute the mean `dep_delay`.
+
+## data.frame
+
+The classic way to do this involves the `split`, `lapply` and `rbind` (with help from do.call) functions.  To split onto two groups we need to make a charcater (or factor) vector with compound meaning, `origin_carrier`, and split on that.
+
+```{r}
+df = read_flights(type = "data.frame")
+o_c = paste(x$origin, x$carrier, sep = "_")
+xx = split(df, o_c) |>
+  lapply(
+    function(grp){
+      data.frame(origin = grp$origin[1],
+                 carrier = grp$carrier[1],
+                 mean_dep_delay = mean(grp$dep_delay, na.rm = TRUE))
+    }
+  )
+x = do.call(rbind, xx)
+x
+```
+
+
+## tibble
+
+Here we simply tag the tibble with the desired grouping.  Our first attempt is to apply an anonymous function to each group using `group_map`.
+
+```{r}
+tbl = read_flights(type = "tibble")
+tbl = dplyr::group_by(tbl, origin, carrier) |>
+  dplyr::group_map(
+    function(grp, key){
+      key |>
+        dplyr::mutate(mean_dep_delay = mean(grp$dep_delay, na.rm = TRUE))
+    }
+  ) |>
+  dplyr::bind_rows()
+tbl
+```
+
+But keep in mind that many of the `dplyr` functions are "group-aware", so we could simplify...
+
+```{r}
+tbl = read_flights(type = "tibble")
+
+tbl = dplyr::group_by(tbl, origin, carrier) |>
+  dplyr::mutate(mean_dep_delay = mean(.data$dep_delay, na.rm = TRUE)) |>
+  dplyr::slice(1) |>
+  dplyr::select(origin, carrier, mean_dep_delay) |>
+  dplyr::ungroup()
+tbl
+```
+## data.table
+
+This is quite different. I'm wobbly enough at `data.table` to know how to do this, but not know why I do this step this particular way.
+
+```{r}
+dt = read_flights(type = "data.table")
+
+dt[, 
+    mean(.SD[[1]], na.rm = TRUE), 
+    by = .(origin, carrier), 
+    .SDcols = "dep_delay"]
+
+```
+## tidytable
+
+This starts out quite similar to `tibble`, but you'll note that there is no need to create an anonymous function to use within `group_map()`. Instead, the `tidytable` helper functions are "group-aware".
+
+```{r}
+tt = read_flights(type = "tidytable")
+tt = tidytable::group_by(tt, origin, carrier) |>
+  tidytable::mutate(mean_dep_delay = mean(.data$dep_delay, na.rm = TRUE)) |>
+  tidytable::slice(1) |>
+  tidytable::select(origin, carrier, mean_dep_delay) |>
+  tidytable::ungroup()
+tt
+```
+
+If you have a more complex function to apply to each step, you can revert back to the more basic `split-do-bind` approach seen with data.frame.
+
+
+```{r}
+tt = read_flights(type = "tidytable")
+tt = tidytable::group_by(tt, origin, carrier) |>
+  tidytable::group_split() |>
+  lapply(
+    function(grp){
+      tidytable::tidytable(
+        origin = grp$origin[1],
+        carrier = grp$carrier[1],
+        mean_dep_delay = mean(grp$dep_delay, na.rm = TRUE)
+      )
+    }
+  ) |>
+  tidytable::bind_rows()
+tt
+```
+

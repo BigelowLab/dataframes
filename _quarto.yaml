@@ -5,6 +5,7 @@ project:
   render:
     - index.qmd
     - tutorials.qmd
+    - spatial.qmd
 execute: 
   cache: false
 website:
@@ -20,6 +21,10 @@ website:
         href: index.qmd
       - text: Tutorials
         href: tutorials.qmd
+      - text: Spatial
+        href: spatial.qmd
+      - text: Grouping
+        href: grouping.qmd
     tools:
       - icon: github
         menu:
