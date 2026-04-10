@@ -192,7 +192,7 @@ df[1:3, 2]
 Whoopsie!  Did you want a data frame?  Then add the `drop = FALSE` argument.
 
 ```{r}
-x[1:3, 2, drop = FALSE]
+df[1:3, 2, drop = FALSE]
 ```
 
 Note that tibbles never degenerate - you always get a data frame back.
@@ -253,8 +253,4 @@ tt = read_flights(type = "tidytable") |>
 class(tt)
 ```
 Note that `tidytable` inherits from `tibble (tbl)`, `data.table` and `data.frame`.
-
-
-
-
 
