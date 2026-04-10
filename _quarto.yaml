@@ -6,6 +6,7 @@ project:
     - index.qmd
     - tutorials.qmd
     - spatial.qmd
+    - grouping.qmd
 execute: 
   cache: false
 website:

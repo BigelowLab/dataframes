@@ -4,6 +4,10 @@ format: html
 editor: source
 ---
 
+```{r, include = FALSE}
+source("setup.R")
+```
+
 A very common task is to split a data frame into subgroups, operate somehow on each group, and then bind the results back into one data frame: `split-do-bind`.
 
 Let's do something simple with the flight data: split into groupings by `origin` and `carrier` and compute the mean `dep_delay`.
@@ -14,8 +18,8 @@ The classic way to do this involves the `split`, `lapply` and `rbind` (with help
 
 ```{r}
 df = read_flights(type = "data.frame")
-o_c = paste(x$origin, x$carrier, sep = "_")
-xx = split(df, o_c) |>
+o_c = paste(df$origin, df$carrier, sep = "_")
+df = split(df, o_c) |>
   lapply(
     function(grp){
       data.frame(origin = grp$origin[1],
@@ -23,8 +27,8 @@ xx = split(df, o_c) |>
                  mean_dep_delay = mean(grp$dep_delay, na.rm = TRUE))
     }
   )
-x = do.call(rbind, xx)
-x
+df = do.call(rbind, df)
+df
 ```
 
 

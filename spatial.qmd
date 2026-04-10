@@ -4,6 +4,11 @@ format: html
 editor: source
 ---
 
+```{r, include = FALSE}
+source("setup.R")
+```
+
+
 We should think about how these data frames play with the [sf R package](https://r-spatial.github.io/sf/). We provide a selection of buoy metadata from the [buoydata R package](https://github.com/NOAA-EDAB/buoydata) where each buoy has a spatial location.
 
 **tldr** `sf` plays well with each of the data frames.
