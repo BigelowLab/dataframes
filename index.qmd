@@ -1,7 +1,7 @@
 ---
 title: "dataframes"
 format: html
-editor: visual
+editor: source
 execute:
   cache: true
 ---
@@ -20,7 +20,7 @@ R has a variety of [data types called `atomic`](https://cran.r-project.org/doc/m
 
 These can be organized into containers such as vectors, matrices, arrays, lists and, our friend today, data.frames. The diagram below shows the approximate relationship among the different types of containers.
 
-![data-type](images/R-data-types.png)
+![data-type](images/R-data-types.png){width=90%}
 
 [The base R data frame](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Data-frames) is called `data.frame, but really it is a [special list](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Lists), which, in turn, is a [special vector](https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Simple-manipulations-numbers-and-vectors)`.
 
