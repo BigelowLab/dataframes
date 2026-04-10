@@ -2,6 +2,8 @@
 title: "dataframes"
 format: html
 editor: visual
+execute:
+  cache: true
 ---
 
 > 
@@ -63,11 +65,12 @@ read_flights = function(type = c("data.frame",
   switch(tolower(type[1]),
          "data.frame" = as.data.frame(flights),
          "tibble" = dplyr::as_tibble(flights),
-         "data.table" = as.data.table(flights),
-         "tidytable" = as.tidytable(flights))
+         "data.table" = data.table::as.data.table(flights),
+         "tidytable" = tidytable::as_tidytable(flights))
 }
 ```
 
+The following code chunk is available as a [gist on github](https://gist.github.com/btupper/463c55f6110b095c76bc4530cdf855cf).  So you could simply run this in R: `source("https://gist.githubusercontent.com/btupper/463c55f6110b095c76bc4530cdf855cf/raw/28d1e2e160b2ebcf798dfde569e0a5de967b745f/data_frames.R")`.
 
 ## A review on `data.frame` class objects
 
@@ -78,10 +81,10 @@ Before we dig into the universe of data frame paradigms, let's quickly review so
 The `data.frame` is the foundational structure for all data frames. They can be created from scratch...
 
 ```{r}
-x = data.frame(
+df = data.frame(
   a = c(1,4,9),
   b = c("dog", "cat", "fish"))
-x
+df
 ```
 
 Or you can coerce (some) lists into data frames.
@@ -90,8 +93,8 @@ Or you can coerce (some) lists into data frames.
 lst = list(name = c("oak", "cherry", "pine", "birch", "ash"),
            difficulty = c("hard", "gnarly", "easy", "medium", "medium"),
            density = c(10, 8, 2, 5, 6))
-x = as.data.frame(lst)
-x
+df = as.data.frame(lst)
+df
 ```
 
 Of course, they can be read from a file, too.  See [`read.csv()`](https://www.rdocumentation.org/packages/utils/versions/3.6.2).
@@ -103,11 +106,11 @@ Of course, they can be read from a file, too.  See [`read.csv()`](https://www.rd
 One can choose a subset of the columns of a data frame by indexing by column number or column name.  Note you can use this to change the order the columns appear.
 
 ```{r}
-x[,c(3,1)]
+df[,c(3,1)]
 ```
 
 ```{r}
-x[,c("density", "name")]
+df[,c("density", "name")]
 ```
 
 #### Subsetting rows (aka records)
@@ -115,9 +118,9 @@ x[,c("density", "name")]
 You can choose certain rows by providing a TRUE/FALSE set of indices by row.  The is called **filtering**.
 
 ```{r}
-irow = x$density < 7
+irow = df$density < 7
 irow
-x[irow,]
+df[irow,]
 ```
 
 Or you can specify the row numbers you would like.  This is called slicing.
@@ -125,7 +128,7 @@ Or you can specify the row numbers you would like.  This is called slicing.
 ```{r}
 irow = which(irow)
 irow
-x[irow,]
+df[irow,]
 ```
 
 ### Ordering (rearranging row order)
@@ -133,9 +136,9 @@ x[irow,]
 This is similar to slicing, except that every row number is still present in the output.
 
 ```{r}
-irow = order(x$name)
+irow = order(df$name)
 irow
-x[irow,]
+df[irow,]
 ```
 
 ### Iterating over groups of rows
@@ -144,25 +147,25 @@ Here we use a split-process-combine process.  First we split into a list where e
 
 #### Split
 ```{r}
-xx = split(x, x$difficulty)
-xx
+ddff = split(df, df$difficulty)
+ddff
 ```
 
 #### Iterate
 
 ```{r}
-xx = lapply(xx,
+ddff = lapply(ddff,
   function(element){
     element$mean = mean(element$density)
     return(element)
   })
-xx
+ddff
 ```
 #### Bind back together
 
 ```{r}
-x = do.call(rbind, xx)
-x
+df = do.call(rbind, ddff)
+df
 ```
 
 Note that we picked up some weirdo row names!  
@@ -172,7 +175,7 @@ Note that we picked up some weirdo row names!
 Depending upon your view, allowing each row to have a name is either pure genius or pure evil.  In general, attaching row names to base `data.frame` is convenient, but it can be quite expensive as the data frame grows in size.  Modern data frames (tibbles, data.tables) don't support rows names; instead these steer the user to use the contents of a row as a row identifier.  So, we'll ignore the fact that base `data.frame` is able to support row names by simply dropping them (we could also use assign `make.row.names = FALSE` in the call to `rbind`.
 
 ```{r}
-rownames(x) <- NULL
+rownames(df) <- NULL
 ```
 
 #### Special lists, but sort of like a matrix
@@ -180,13 +183,13 @@ rownames(x) <- NULL
 Because of the special rules around the data frames (each column has the same length), they are also matrix-like.  So, one can subset data frames using the same `[row,column]` syntax.
 
 ```{r}
-x[c(5,2), c(3,1)]
+df[c(5,2), c(3,1)]
 ```
 
-But beware of degeneracy, when yoiu select a single dimension and the data frame-iness is dropped in favor of providing just a vector.
+But beware of degeneracy, when you select a single dimension and the data frame-iness is dropped in favor of providing just a vector.
 
 ```{r}
-x[1:3, 2]
+df[1:3, 2]
 ```
 
 Whoopsie!  Did you want a data frame?  Then add the `drop = FALSE` argument.
@@ -195,6 +198,66 @@ Whoopsie!  Did you want a data frame?  Then add the `drop = FALSE` argument.
 x[1:3, 2, drop = FALSE]
 ```
 
-Note that tibbles and data.tables never degenerate - you always get a data frame back.
+Note that tibbles never degenerate - you always get a data frame back.
+
+# data.frames! tibbles! data.tables! tidytables! Oh my!
+
+Let's read in the [`flight`](https://cran.r-project.org/web/packages/nycflights13/index.html) data, and show how each type of data frame prints.
+
+## data.frame
+
+```{r base}
+df = read_flights(type = "data.frame") |>
+  print()
+```
+
+The default behavior is to print the first `getOption("max.print")` **elements**.  See `?print.default` for finer control.
+
+```{r base-class}
+class(df)
+```
+
+## tibble
+
+```{r tibble}
+tbl = read_flights(type = "tibble") |>
+  print()
+```
+By default `tibbles` print the first 10 rows, and may contract the number of columns to print.  See `?print.tbl` for finer control.
+
+```{r class-tbl}
+class(tbl)
+```
+Note that the base class for `tibbles` is still `data.frame`
+
+## data.table
+
+```{r data.table}
+dt = read_flights(type = "data.table") |>
+  print()
+```
+
+By default `data.tables` print the first and last 5 rows. Note that a row number is printed as a convenience, too.  See `?print.data.table` for finer control.
+
+```{r class-dt}
+class(dt)
+```
+Note that the base class for `data.table` is still also `data.frame`.
+
+
+## tidytable
+
+```{r tidytable}
+tt = read_flights(type = "tidytable") |>
+  print()
+```
+
+```{r class-tt}
+class(tt)
+```
+Note that `tidytable` inherits from `tibble (tbl)`, `data.table` and `data.frame`.
+
+
+
 
 

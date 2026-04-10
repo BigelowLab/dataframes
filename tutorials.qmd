@@ -1,0 +1,54 @@
+---
+title: "Tutorials"
+format: html
+editor: source
+---
+
+Here we move beyond the basic tools for working with `base::data.frame` data frames to look at row selection as implemented for `tibbles`, `data.table` and `tidytables`.
+
+But, let's be honest, others have done all of the work showing how to use the various data frames and comparing them.  Let's simply assemble a nice list of tutorials and comparisons.
+
+
+# Tutorials
+
+## tibble
+
+[tidyverse](https://tibble.tidyverse.org/)
+
+## tidytable
+
+[Mark Fairbanks](https://markfairbanks.github.io/tidytable/)
+
+## data.table
+
+[r-datatable](https://r-datatable.com/)
+
+# Comparisons
+
+[Albert Rapp, 2025](https://albert-rapp.de/posts/34_datatable_vs_dplyr/34_datatable_vs_dplyr.html)
+
+[Manny Gimond, Colby 2019])https://mgimond.github.io/rug_2019_12/Index.html)
+
+[EDAV 2021](https://jtr13.github.io/cc21fall2/comparison-among-base-r-tidyverse-and-datatable.html)
+
+[exomemory for programming, 2021](https://megapteraphile.wordpress.com/2020/03/25/data-frame-vs-data-table-vs-tibble-in-r/)
+
+[Wetlandscapes, 2020](https://wetlandscapes.com/blog/a-comparison-of-r-dialects/)
+
+[R-bloggers 2024](https://www.r-bloggers.com/2024/03/the-truth-about-tidy-wrappers-2/)
+
+
+# There are more fish in the sea...
+
+Well, depends upon the fish. Here are some other table manipulation tools.
+
+[arrow](https://arrow.apache.org/docs/r/)
+
+[dtplyr](https://dtplyr.tidyverse.org/)
+
+[tidyfst](https://hope-data-science.github.io/tidyfst/index.html)
+
+[polars](https://pola-rs.github.io/r-polars/)
+
+[tidypolars](https://tidypolars.etiennebacher.com/)
+

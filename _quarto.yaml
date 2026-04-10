@@ -4,9 +4,7 @@ project:
   execute-dir: project
   render:
     - index.qmd
-    - columns.qmd
-    - rows.qmd
-    - groups.qmd
+    - tutorials.qmd
 execute: 
   cache: false
 website:
@@ -20,14 +18,8 @@ website:
     contents:
       - text: Home
         href: index.qmd
-      - text: Subsetting columns (variables)
-        href: columns.qmd
-      - text: Subsetting rows (records)
-        href: rows.qmd
-      - text: Working with groups
-        href: groups.qmd
-      - text: Spatial
-        href: spatial.qmd
+      - text: Tutorials
+        href: tutorials.qmd
     tools:
       - icon: github
         menu:
